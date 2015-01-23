@@ -1,6 +1,7 @@
 guidesController = function() {
 	var guidesPage;
 	var initialised = false;
+	var manage = false;
 
 	return {
 		init : function(page) {
@@ -17,6 +18,7 @@ guidesController = function() {
 
 				$(guidesPage).find('#manageEvt').click(function(evt) {
 				  console.log('In event manage');
+				  manage = ! manage;
 					evt.preventDefault();
 					$(guidesPage).find('#manage').slideToggle("slow");
 					$(guidesPage).find('.editNav').slideToggle("fast");
@@ -35,6 +37,7 @@ guidesController = function() {
           if (evt.keyCode == 13) {
             console.log('In search '+ $(this).val());
             evt.preventDefault();
+
             $(guidesPage).find('#resultList tbody').remove();
             $(guidesPage).find('#results').removeClass('not');
             $(guidesPage).find('#results').show();
@@ -47,6 +50,12 @@ guidesController = function() {
 //            $(guidesPage).find('#resultList').remove('.detail');
             $(guidesPage).find('#resultList').append($('#resultsRow').tmpl(res));
             //html($('#resultsRow').tmpl(res));
+
+            if (manage) {
+//              $(guidesPage).find('#manage').slideToggle("slow");
+					    $(guidesPage).find('.editNav').slideToggle("fast");
+
+            }
 
             updateEventHandler();
 
