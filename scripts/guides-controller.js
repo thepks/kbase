@@ -14,6 +14,9 @@ guidesController = function() {
 					evt.preventDefault();
 <!--					$(guidesPage).find('#home').slideToggle("slow");  ->
 					$(guidesPage).find('#home').parent().siblings().children('div').hide();
+					if (manage) {
+					  manage = !manage;
+					}
 				});
 
 				$(guidesPage).find('#manageEvt').click(function(evt) {
