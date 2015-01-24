@@ -48,7 +48,9 @@
   	      <col width="80%">
   	    </colgroup>
   	    <tr>
-  	      <td class="tabLabel">Title<input type="hidden" name="key" value="tbc" id="newKey" /></td>
+  	      <td class="tabLabel">Title<input type="hidden" name="key" value="tbc" id="newKey" />
+  	      <input type="hidden" name="rev" value="tbc" id="newRev" />
+  	      </td>
   	      <td><input type="text" id="newTitle" class="newInput"/></td>
   	    </tr>
   	      <td class="tabLabel">Description</td>
@@ -60,19 +62,10 @@
   	    </tr>
   	    <tr>
   	      <td class="tabLabel">SAP Note</td>
-  	      <td><input type="number" id="newNote" class="newInput"/></td>
-  	    </tr>
-  	    <tr>
-  	      <td class="tabLabel">
-  	        <select name="newType">
-  	          <option value="thumb">Rule of Thumb</option>
-  	          <option value="guidance">Guidance Note</option>
-  	          <option value="transactions">Transaction</option>
-  	          <option value="solution">Solution Area</option>
-  	        </select>
+  	      <td>
+  	        <input type="number" id="newNote" class="newInputShort"/>
+  	        <input type="submit" id="newSubmit" value="Add Item">
   	      </td>
-  	      <td><input type="submit" id="newSubmit" value="Add Item"></td>
-  	    </tr>
   	    </tr>
   	  </table>
 	  </div>

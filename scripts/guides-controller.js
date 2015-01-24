@@ -85,12 +85,21 @@ guidesController = function() {
 					evt.preventDefault();
 					// get the values and push them into the edit section
 
-					var res = [{ title: 'Max Runtime', note : 0121132, key:'010219jqdqdha8wwjqjq', description: 'some words' }];
 
-					$(guidesPage).find('#newKey').val(res[0].key);
-					$(guidesPage).find('#newTitle').val(res[0].title);
-					$(guidesPage).find('#newDescription').val(res[0].description);
-					$(guidesPage).find('#newNote').val(res[0].note);
+var sample = '{ \
+    "_id": "4b2ff3fd1a3a7224cea84f8719670647", \
+    "_rev": "3-80d2fe988e30914a31f45d295029fba5", \
+    "title": "Context Switches", \
+    "description": "For context switches a value would be typically 1500 x CPU.  At 5000 x CPU this become limiting", \
+    "note": "" \
+}';
+					var res = JSON.parse(sample);
+
+					$(guidesPage).find('#newKey').val(res._id);
+					$(guidesPage).find('#newTitle').val(res.title);
+					$(guidesPage).find('#newDescription').val(res.description);
+					$(guidesPage).find('#newNote').val(res.note);
+					$(guidesPage).find('#newRev').val(res._rev);
 
 				});
 

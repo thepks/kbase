@@ -75,6 +75,11 @@ td {
   width: 95%;
 }
 
+.newInputShort {
+  width: 65%;
+}
+
+
 .newDescription {
   width: 95%;
   height: 60px;
