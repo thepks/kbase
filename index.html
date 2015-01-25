@@ -6,6 +6,7 @@
 <link rel="stylesheet" type="text/css" href="styles/guides.css"
 	media="screen" />
 <script src="scripts/jquery-1.11.2.min.js"></script>
+<script src="scripts/hidden.js"></script>
 <script src="scripts/guides-controller.js"></script>
 <script src="scripts/jquery-tmpl.js"></script>
 </head>
@@ -14,7 +15,7 @@
 		<span>Performance Guides</span>
 	</header>
 	<main  id="guidesPage">
-	<form>
+	<form id="manageForm">
 	<section id="navMenu" class="navMenu">
 	  <ul class="topnav">
 	    <li><a href="#" id="homeEvt" class="menuText">HOME</a></li>
@@ -51,10 +52,10 @@
   	      <td class="tabLabel">Title<input type="hidden" name="key" value="tbc" id="newKey" />
   	      <input type="hidden" name="rev" value="tbc" id="newRev" />
   	      </td>
-  	      <td><input type="text" id="newTitle" class="newInput"/></td>
+  	      <td><input type="text" id="newTitle" class="newInput" required/></td>
   	    </tr>
   	      <td class="tabLabel">Description</td>
-  	      <td><input type="textarea" id="newDescription" class="newDescription"></td>
+  	      <td><input type="textarea" id="newDescription" class="newDescription" required></td>
   	    </tr>
   	    <tr>
   	      <td class="tabLabel">Config. Item</td>
@@ -66,6 +67,10 @@
   	        <input type="number" id="newNote" class="newInputShort"/>
   	        <input type="submit" id="newSubmit" value="Add Item">
   	      </td>
+  	    </tr>
+  	    <tr id="newFeedback" class="newFeedback">
+  	      <td class="tabLabel">&nbsp;</td>
+  	      <td><p id="newResults" class="newResults">&nbsp;</p></td>
   	    </tr>
   	  </table>
 	  </div>
@@ -95,6 +100,7 @@
 </body>
 <script>
 $(document).ready(function() {
+  hidden.init();
 	guidesController.init($('#guidesPage'));
 });
 </script>
@@ -105,11 +111,11 @@ $(document).ready(function() {
 <tr>
 	<td>
 	  <nav class="editNav">
-	    <a href="#" class="resultEdit" value="${key}">
+	    <a href="#" class="resultEdit" value="${_id}">
 	      <img src="resources/UniversalEditButton3.png" style="width:18px;height:18px"/>&nbsp;
 	    </a>
 	  </nav>
-	  <nav><a href="#" class="resultDetail" value="${key}">${title}</a></nav>
+	  <nav><a href="#" class="resultDetail" value="${_id}">${title}</a></nav>
 	</td>
 	<td>
 	  {{if note}}
@@ -122,13 +128,12 @@ $(document).ready(function() {
 	</td>
 </tr>
 </tbody>
-<tbody class="detail" id="${key}">
+<tbody class="detail" id="${_id}">
 <tr>
     <td colspan="2" class="detailText">${description}</td>
   </tr>
   <tr>
-    <td class="detailText">Parameter: ${paramater}</td>
-    <td class="detailText">${category}</td>
+    <td colspan="2" class="detailText">Parameter: ${paramater}</td>
   </tr>
 </tbody>
 </script>

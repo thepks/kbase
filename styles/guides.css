@@ -76,13 +76,28 @@ td {
 }
 
 .newInputShort {
-  width: 65%;
+  width: 45%;
 }
 
 
 .newDescription {
   width: 95%;
   height: 60px;
+}
+
+.newFeedback {
+  display: none;
+
+}
+
+.newResults {
+  width: 95%;
+  color: blue;
+}
+
+.newResultsError {
+  width: 95%;
+  color: red;
 }
 
 .results {
