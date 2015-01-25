@@ -2,6 +2,13 @@ guidesController = function() {
 	var guidesPage;
 	var initialised = false;
 	var manage = false;
+	var url = '/kbase';
+	var searchUrl1 = '/kbase/_design/kb/_search/keywords?q=description:';
+  var searchUrl2 = '%20OR%20title:';
+  var searchUrl3 = '&include_docs=true';
+
+
+
 
 	return {
 		init : function(page) {
@@ -12,7 +19,6 @@ guidesController = function() {
 				$(guidesPage).find('#homeEvt').click(function(evt) {
 				  console.log('In event');
 					evt.preventDefault();
-<!--					$(guidesPage).find('#home').slideToggle("slow");  ->
 					$(guidesPage).find('#home').parent().siblings().children('div').hide();
 					if (manage) {
 					  manage = !manage;
@@ -30,6 +36,51 @@ guidesController = function() {
 
 				});
 
+				// Add the save event handler
+				$(guidesPage).find('#manageForm').submit(function(evt) {
+				  evt.preventDefault();
+				  if (manage) {
+				    console.log('Saving...');
+
+  				  var res = {};
+  				  res._id = $(guidesPage).find('#newKey').val();
+  					res.title = $(guidesPage).find('#newTitle').val();
+  					res.description = $(guidesPage).find('#newDescription').val();
+  					res.note = $(guidesPage).find('#newNote').val();
+  					res._rev = $(guidesPage).find('#newRev').val();
+  					res.parameter = $(guidesPage).find('#newParam').val();
+
+            console.log(JSON.stringify(res));
+
+				    $.post(url,JSON.stringify(res),function(data,status) {
+				      $(guidesPage).find('#newResults').text('Success!');
+
+  				    setTimeout(function(){
+                $(guidesPage).find('#newFeedback').hide();
+                $(guidesPage).find('#newResults').text('');
+  				    },2000);
+
+				    }).fail(function(jqXHR, textStatus, errorThrown) {
+				      $(guidesPage).find('#newResults').removeClass('newResults');
+			        $(guidesPage).find('#newResults').addClass('newResultsError');
+			        $(guidesPage).find('#newResults').text('Error! ' + errorThrown);
+
+  				    setTimeout(function(){
+                $(guidesPage).find('#newFeedback').hide();
+                $(guidesPage).find('#newResults').text('');
+  				    },2000);
+
+
+				    });
+
+            $(guidesPage).find('#newFeedback').show();
+				    $(guidesPage).find('#newResults').text('Saving!');
+
+				  }
+
+				});
+
+
 				$(guidesPage).find('#aboutEvt').click(function(evt) {
 				  console.log('In event');
 					evt.preventDefault();
@@ -41,21 +92,30 @@ guidesController = function() {
             console.log('In search '+ $(this).val());
             evt.preventDefault();
 
+            var u = searchUrl1+$(this).val()+searchUrl2+$(this).val()+searchUrl3;
+            console.log(u);
+
             $(guidesPage).find('#resultList tbody').remove();
             $(guidesPage).find('#results').removeClass('not');
             $(guidesPage).find('#results').show();
-            // Dummy add
-            var res = [{ title: 'Max Runtime', note : 0121132, key:'010219jqdqdha8wwjqjq', description: 'some words' },
-            { title: 'Max Runtime2', note : 712132, key:'0102wfwedqdha8wwjqjq',description: 'some words2' },
-            { title: 'Max Runtime4', note : 121132, key:'010219jqij4owwwwjqjq',description: 'some words3' }];
 
-//            $(guidesPage).find('#resultList').remove('.resultsBody');
-//            $(guidesPage).find('#resultList').remove('.detail');
-            $(guidesPage).find('#resultList').append($('#resultsRow').tmpl(res));
-            //html($('#resultsRow').tmpl(res));
+            $.get(u,function(data,status) {
+              console.log("Data " + data);
+              var d = JSON.parse(data);
+  		        var pd = []
+  		        for (var i=0; i<d.rows.length;i++){
+  		          pd.push(d.rows[i].doc);
+  		        }
+
+  			      $(guidesPage).find('#resultList').append($('#resultsRow').tmpl(pd));
+
+				    }).fail(function(jqXHR, textStatus, errorThrown) {
+			        console.log('Error! ' + errorThrown);
+				    });
+
+
 
             if (manage) {
-//              $(guidesPage).find('#manage').slideToggle("slow");
 					    $(guidesPage).find('.editNav').slideToggle("fast");
 
             }
@@ -69,6 +129,9 @@ guidesController = function() {
 			}
 		}
 	}
+
+
+
 
   function updateEventHandler() {
 
@@ -86,20 +149,28 @@ guidesController = function() {
 					// get the values and push them into the edit section
 
 
-var sample = '{ \
-    "_id": "4b2ff3fd1a3a7224cea84f8719670647", \
-    "_rev": "3-80d2fe988e30914a31f45d295029fba5", \
-    "title": "Context Switches", \
-    "description": "For context switches a value would be typically 1500 x CPU.  At 5000 x CPU this become limiting", \
-    "note": "" \
-}';
-					var res = JSON.parse(sample);
+          $.get(url+"/"+val,function(data,status) {
+            console.log("Data " + data);
+            var res = JSON.parse(data);
 
-					$(guidesPage).find('#newKey').val(res._id);
-					$(guidesPage).find('#newTitle').val(res.title);
-					$(guidesPage).find('#newDescription').val(res.description);
-					$(guidesPage).find('#newNote').val(res.note);
-					$(guidesPage).find('#newRev').val(res._rev);
+  					$(guidesPage).find('#newKey').val(res._id);
+  					$(guidesPage).find('#newTitle').val(res.title);
+  					$(guidesPage).find('#newDescription').val(res.description);
+  					if (res.note) {
+  					  $(guidesPage).find('#newNote').val(res.note);
+  					}
+  					$(guidesPage).find('#newRev').val(res._rev);
+  					if (res.parameter) {
+  					  $(guidesPage).find('#newParam').val(res.parameter);
+  					}
+
+
+			    }).fail(function(jqXHR, textStatus, errorThrown) {
+		        console.log('Error! ' + errorThrown);
+			    });
+
+
+
 
 				});
 
