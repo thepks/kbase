@@ -43,11 +43,15 @@ guidesController = function() {
 				    console.log('Saving...');
 
   				  var res = {};
-  				  res._id = $(guidesPage).find('#newKey').val();
+  				  if ($(guidesPage).find('#newKey').val().length > 1) {
+  				    res._id = $(guidesPage).find('#newKey').val();
+  				  }
   					res.title = $(guidesPage).find('#newTitle').val();
   					res.description = $(guidesPage).find('#newDescription').val();
   					res.note = $(guidesPage).find('#newNote').val();
-  					res._rev = $(guidesPage).find('#newRev').val();
+  					if ($(guidesPage).find('#newRev').val().length > 1) {
+  					  res._rev = $(guidesPage).find('#newRev').val();
+  					}
   					res.parameter = $(guidesPage).find('#newParam').val();
 
             console.log(JSON.stringify(res));
@@ -109,18 +113,18 @@ guidesController = function() {
 
   			      $(guidesPage).find('#resultList').append($('#resultsRow').tmpl(pd));
 
+
+              if (manage) {
+  					    $(guidesPage).find('.editNav').slideToggle("fast");
+              }
+
+              updateEventHandler();
+
 				    }).fail(function(jqXHR, textStatus, errorThrown) {
 			        console.log('Error! ' + errorThrown);
 				    });
 
 
-
-            if (manage) {
-					    $(guidesPage).find('.editNav').slideToggle("fast");
-
-            }
-
-            updateEventHandler();
 
           }
         }));
