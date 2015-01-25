@@ -250,3 +250,19 @@ label.navText {
   font-size: 16px;
 }
 
+.menuOnline {
+  background-color: green;
+}
+
+.topnav a#pouchEvt {
+	padding:12px 18px;
+	text-decoration: none;
+}
+
+.topnav a#pouchEvt:active, .topnav a#pouchEvt:hover,.topnav a#pouchEvt:focus {
+
+}
+
+.menuOffline {
+  background-color: red;
+}
