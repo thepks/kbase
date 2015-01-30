@@ -145,14 +145,15 @@ guidesController = function() {
             var conf = window.confirm('Do you want to delete ' + res.title);
 
             if (conf) {
-              $.delete(url+"/"+res._id+"?rev="+res._rev, function(data,status) {
-      					$(guidesPage).find('#home').parent().siblings().children('div').hide();
-      					if (manage) {
-      					  manage = !manage;
-      					}
+              var dest1 = url+"/"+res._id+"?rev="+res._rev;
+              $.ajax { url: dest1, type: 'DELETE', success: function(data,status) {
+        					$(guidesPage).find('#home').parent().siblings().children('div').hide();
+        					if (manage) {
+        					  manage = !manage;
+      					  }
+                }
               });
             }
-
 			    }).fail(function(jqXHR, textStatus, errorThrown) {
 		        console.log('Error! ' + errorThrown);
 			    });
