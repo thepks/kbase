@@ -73,6 +73,9 @@ guidesController = function() {
                 $(guidesPage).find('#newResults').text('');
   				    },2000);
 				    });
+
+				    $(guidesPage).find('#newFeedback').show();
+				    $(guidesPage).find('#newResults').text('Saving!');
 			    }
 				});
 
@@ -146,7 +149,7 @@ guidesController = function() {
 
             if (conf) {
               var dest1 = url+"/"+res._id+"?rev="+res._rev;
-              $.ajax { url: dest1, type: 'DELETE', success: function(data,status) {
+              $.ajax({ url: dest1, type: 'DELETE', success: function(data,status) {
         					$(guidesPage).find('#home').parent().siblings().children('div').hide();
         					if (manage) {
         					  manage = !manage;
