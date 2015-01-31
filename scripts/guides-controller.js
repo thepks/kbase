@@ -40,7 +40,8 @@ guidesController = function() {
 				  evt.preventDefault();
 				  if (manage) {
 				    console.log('Saving...');
-
+				    // Disable the save button
+            $(guidesPage).find('#newSubmit').attr('disabled',true);
   				  var res = {};
   				  if ($(guidesPage).find('#newKey').val().length > 1) {
   				    res._id = $(guidesPage).find('#newKey').val();
@@ -64,6 +65,7 @@ guidesController = function() {
   				    setTimeout(function(){
                 $(guidesPage).find('#newFeedback').hide();
                 $(guidesPage).find('#newResults').text('');
+                $(guidesPage).find('#newSubmit').attr('disabled',false);
   				    },2000);
 
 				    }).fail(function(jqXHR, textStatus, errorThrown) {
@@ -74,6 +76,7 @@ guidesController = function() {
   				    setTimeout(function(){
                 $(guidesPage).find('#newFeedback').hide();
                 $(guidesPage).find('#newResults').text('');
+                $(guidesPage).find('#newSubmit').attr('disabled',false);
   				    },2000);
 				    });
 
