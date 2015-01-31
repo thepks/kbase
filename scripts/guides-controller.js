@@ -145,7 +145,7 @@ guidesController = function() {
           var val=$(this).attr('value');
 				  console.log('In event delete '+val);
 					evt.preventDefault();
-					// get the values and push them into the edit section
+					// get the values for title and rev
 
           $.get(url+"/"+val,function(data,status) {
             console.log("Data " + data);
@@ -179,6 +179,12 @@ guidesController = function() {
             console.log("Data " + data);
             var res = JSON.parse(data);
 
+            // Delete old values
+  					$(guidesPage).find('#manageTable').find('input').val('');
+  					$(guidesPage).find('#newSubmit').val('Save');
+
+
+            // Push new
   					$(guidesPage).find('#newKey').val(res._id);
   					$(guidesPage).find('#newTitle').val(res.title);
   					$(guidesPage).find('#newDescription').val(res.description);
