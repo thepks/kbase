@@ -58,6 +58,9 @@ guidesController = function() {
 				    $.post(url,JSON.stringify(res),function(data,status) {
 				      $(guidesPage).find('#newResults').text('Success!');
 
+    					$(guidesPage).find('#manageTable').find('input').val('');
+    					$(guidesPage).find('#newSubmit').val('Save');
+
   				    setTimeout(function(){
                 $(guidesPage).find('#newFeedback').hide();
                 $(guidesPage).find('#newResults').text('');
