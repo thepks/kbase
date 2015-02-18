@@ -148,24 +148,24 @@ guidesController = function() {
       				dataType: "json",
       				success: function(data, status) {
 
+      				$(guidesPage).find('#newResults').show();
 				      $(guidesPage).find('#newResults').text('Success!');
 
-    					$(guidesPage).find('#manageTable').find('input').val('');
+    					$(guidesPage).find('#manage').find('input').val('');
     					$(guidesPage).find('#newSubmit').val('Save');
 
   				    setTimeout(function(){
-                $(guidesPage).find('#newFeedback').hide();
+  				      $(guidesPage).find('#newResults').hide();
                 $(guidesPage).find('#newResults').text('');
                 $(guidesPage).find('#newSubmit').attr('disabled',false);
   				    },2000);
       				},
       				error: function(data,status) {
-  				      $(guidesPage).find('#newResults').removeClass('newResults');
-  			        $(guidesPage).find('#newResults').addClass('newResultsError');
+  				      $(guidesPage).find('#newResults').show();
   			        $(guidesPage).find('#newResults').text('Error! ' + JSON.stringify(data));
 
     				    setTimeout(function(){
-                  $(guidesPage).find('#newFeedback').hide();
+                  $(guidesPage).find('#newResults').hide();
                   $(guidesPage).find('#newResults').text('');
                   $(guidesPage).find('#newSubmit').attr('disabled',false);
     				    },5000);
