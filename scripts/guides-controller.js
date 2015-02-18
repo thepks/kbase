@@ -260,7 +260,7 @@ guidesController = function() {
                     var res = JSON.parse(data);
 
                     // Delete old values
-          					$(guidesPage).find('#manageTable').find('input').val('');
+          					$(guidesPage).find('#manage').find('input').val('');
           					$(guidesPage).find('#newSubmit').val('Save');
 
 
