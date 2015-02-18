@@ -140,7 +140,14 @@ guidesController = function() {
 
             console.log(JSON.stringify(res));
 
-				    $.post(url,JSON.stringify(res),function(data,status) {
+            $.ajax({
+      				url: url,
+      				type: "POST",
+      				data: JSON.stringify(res),
+      				contentType: "application/json; charset=utf-8",
+      				dataType: "json",
+      				success: function(data, status) {
+
 				      $(guidesPage).find('#newResults').text('Success!');
 
     					$(guidesPage).find('#manageTable').find('input').val('');
@@ -151,17 +158,18 @@ guidesController = function() {
                 $(guidesPage).find('#newResults').text('');
                 $(guidesPage).find('#newSubmit').attr('disabled',false);
   				    },2000);
+      				},
+      				error: function(data,status) {
+  				      $(guidesPage).find('#newResults').removeClass('newResults');
+  			        $(guidesPage).find('#newResults').addClass('newResultsError');
+  			        $(guidesPage).find('#newResults').text('Error! ' + JSON.stringify(data));
 
-				    }).fail(function(jqXHR, textStatus, errorThrown) {
-				      $(guidesPage).find('#newResults').removeClass('newResults');
-			        $(guidesPage).find('#newResults').addClass('newResultsError');
-			        $(guidesPage).find('#newResults').text('Error! ' + errorThrown);
-
-  				    setTimeout(function(){
-                $(guidesPage).find('#newFeedback').hide();
-                $(guidesPage).find('#newResults').text('');
-                $(guidesPage).find('#newSubmit').attr('disabled',false);
-  				    },2000);
+    				    setTimeout(function(){
+                  $(guidesPage).find('#newFeedback').hide();
+                  $(guidesPage).find('#newResults').text('');
+                  $(guidesPage).find('#newSubmit').attr('disabled',false);
+    				    },5000);
+      				}
 				    });
 
 				    $(guidesPage).find('#newFeedback').show();
@@ -205,25 +213,33 @@ guidesController = function() {
 					evt.preventDefault();
 					// get the values for title and rev
 
-          $.get(url+"/"+val,function(data,status) {
-            console.log("Data " + data);
-            var res = JSON.parse(data);
+					$.ajax({
+                  url: url+"/"+val,
+                  type: "GET",
+                  contentType: "application/json; charset=utf-8",
+                  dataType: "json",
+                  success: function(data, status, jqXHR) {
 
-            var conf = window.confirm('Do you want to delete ' + res.title);
+                  console.log("Data " + data);
+                  var res = JSON.parse(data);
 
-            if (conf) {
-              var dest1 = url+"/"+res._id+"?rev="+res._rev;
-              $.ajax({ url: dest1, type: 'DELETE', success: function(data,status) {
-        					$(guidesPage).find('#home').parent().siblings().children('div').hide();
-        					if (manage) {
-        					  manage = !manage;
-      					  }
-                }
-              });
-            }
-			    }).fail(function(jqXHR, textStatus, errorThrown) {
-		        console.log('Error! ' + errorThrown);
-			    });
+                  var conf = window.confirm('Do you want to delete ' + res.title);
+
+                  if (conf) {
+                    var dest1 = url+"/"+res._id+"?rev="+res._rev;
+                    $.ajax({ url: dest1, type: 'DELETE', success: function(data,status) {
+              					$(guidesPage).find('#home').parent().siblings().children('div').hide();
+              					if (manage) {
+              					  manage = !manage;
+            					  }
+                      }
+                    });
+                  }
+                  },
+                  error: function(data,status) {
+        		        console.log('Error! ' + JSON.stringify(data));
+			            }
+			         });
         });
 
         $(guidesPage).find('.resultEdit').click(function(evt) {
@@ -233,31 +249,37 @@ guidesController = function() {
 					// get the values and push them into the edit section
 
 
-          $.get(url+"/"+val,function(data,status) {
-            console.log("Data " + data);
-            var res = JSON.parse(data);
+         $.ajax({
+                  url: url+"/"+val,
+                  type: "GET",
+                  contentType: "application/json; charset=utf-8",
+                  dataType: "json",
+                  success: function(data, status, jqXHR) {
 
-            // Delete old values
-  					$(guidesPage).find('#manageTable').find('input').val('');
-  					$(guidesPage).find('#newSubmit').val('Save');
+                    console.log("Data " + data);
+                    var res = JSON.parse(data);
 
-
-            // Push new
-  					$(guidesPage).find('#newKey').val(res._id);
-  					$(guidesPage).find('#newTitle').val(res.title);
-  					$(guidesPage).find('#newDescription').val(res.description);
-  					if (res.note) {
-  					  $(guidesPage).find('#newNote').val(res.note);
-  					}
-  					$(guidesPage).find('#newRev').val(res._rev);
-  					if (res.parameter) {
-  					  $(guidesPage).find('#newParam').val(res.parameter);
-  					}
+                    // Delete old values
+          					$(guidesPage).find('#manageTable').find('input').val('');
+          					$(guidesPage).find('#newSubmit').val('Save');
 
 
-			    }).fail(function(jqXHR, textStatus, errorThrown) {
-		        console.log('Error! ' + errorThrown);
-			    });
+                    // Push new
+          					$(guidesPage).find('#newKey').val(res._id);
+          					$(guidesPage).find('#newTitle').val(res.title);
+          					$(guidesPage).find('#newDescription').val(res.description);
+          					if (res.note) {
+          					  $(guidesPage).find('#newNote').val(res.note);
+          					}
+          					$(guidesPage).find('#newRev').val(res._rev);
+          					if (res.parameter) {
+          					  $(guidesPage).find('#newParam').val(res.parameter);
+          					}
+                  },
+                  error: function(data, status, jqXHR) {
+        		        console.log('Error! ' + JSON.stringify(data));
+			            }
+			            });
 
         });
     },
@@ -285,26 +307,33 @@ guidesController = function() {
       $(guidesPage).find('#results').removeClass('not');
       $(guidesPage).find('#results').show();
 
-      $.get(u,function(data,status) {
-        console.log("Data " + data);
-        var d = JSON.parse(data);
-        var pd = []
-        for (var i=0; i<d.rows.length;i++){
-          pd.push(d.rows[i].doc);
-        }
+        $.ajax({
+                  url: u,
+                  type: "GET",
+                  contentType: "application/json; charset=utf-8",
+                  dataType: "json",
+                  success: function(data, status, jqXHR) {
 
-        $(guidesPage).find('#resultList').append($('#resultsRow').tmpl(pd));
+                    console.log("Data " + data);
+                    var d = JSON.parse(data);
+                    var pd = []
+                    for (var i=0; i<d.rows.length;i++){
+                      pd.push(d.rows[i].doc);
+                    }
+
+                    $(guidesPage).find('#resultList').append($('#resultsRow').tmpl(pd));
 
 
-        if (manage) {
-  		    $(guidesPage).find('.editNav').slideToggle("fast");
-        }
+                    if (manage) {
+              		    $(guidesPage).find('.editNav').slideToggle("fast");
+                    }
 
-        updateEventHandler();
-
-      }).fail(function(jqXHR, textStatus, errorThrown) {
-        console.log('Error! ' + errorThrown);
-      });
+                    updateEventHandler();
+                  },
+                  error: function(data,status) {
+                    console.log('Error! ' + data);
+                  }
+                });
 
 	 }
   }
