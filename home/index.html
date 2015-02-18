@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Performance Guides</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="../styles/guides.css"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+<script src="../scripts/guides-controller.js"></script>
+<script src="../scripts/jquery-tmpl.js"></script>
+</head>
+<body>
+	<main  id="guidesPage">
+
+	   <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#" id="aboutEvt">Performance Guides</a>
+        </div>
+        <div>
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#" id="homeEvt">Home</a></li>
+            <li><a href="#" id="manageEvt">Manage</a></li>
+          </ul>
+
+          <div class="col-sm-2 pull-right">
+            <form class="navbar-form" role="search">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search" name="search" id="search">
+                <div class="input-group-btn">
+                  <button class="btn btn-default" type="submit" id="searchBtnEvt"><i class="glyphicon glyphicon-search"></i></button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div>
+            <ul class="nav navbar-nav pull-right">
+              <li><a href="#" id="logonEvt"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+              <li><a href="#" id="logoffEvt"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+	<form id="manageForm">
+
+	<section>
+	  <div id="home">
+	    <p>This application is used to record and share performance guidelines and other useful information.</p>
+	    <p>Use the search function to find related information such as rule of thumb guides, important parameters and SAP Notes.</p>
+	  </div>
+	</section>
+	<section>
+	  <div id="about" class="jumbotron">
+	    <p>Basic functions to search, add and manage performance related information.</p>
+	    <p>To add a new item use the manage button and enter details.</p>
+	    <p>To see full details click on the title of an item in the search results.</p>
+	    <p>To edit search first and then press the manage button to enable the edit function.</p>
+	    <p>To delete search first then press the bin.</p>
+	    <p>&nbsp;</p>
+	    <p>Version 0.3</p>
+	    <p>Contact: graham@theparkes.me.uk</p>
+	  </div>
+	</section>
+	<section>
+	  <div id="manage"  class="jumbotron">
+	    <p>Manage Details</p>
+	    <div class="row form-group">
+          <span class="col-sm-6">
+      	    <label for="newTitle">Title</label>
+      	    <input type="text" id="newTitle" class="form-control" required/>
+      	    <input type="hidden" name="key" value="tbc" id="newKey" />
+  	        <input type="hidden" name="rev" value="tbc" id="newRev" />
+          </span>
+          <span class="col-sm-6">&nbsp;</span>
+	    </div>
+	    <div class="row form-group">
+          <span class="col-sm-6">
+      	    <label for="newDescription">Description</label>
+      	    <input type="textarea" id="newDescription" class="form-control" required/>
+          </span>
+          <span class="col-sm-6">&nbsp;</span>
+	    </div>
+	    <div class="row form-group">
+          <span class="col-sm-6">
+      	    <label for="newParam">Config. Item</label>
+      	    <input type="text" id="newParam" class="form-control"/>
+          </span>
+          <span class="col-sm-6">&nbsp;</span>
+	    </div>
+	    <div class="row form-group">
+          <span class="col-sm-4">
+      	    <label for="newNote">SAP Note</label>
+      	    <input type="number" id="newNote" class="form-control"/>
+          </span>
+          <span class="col-sm-2">
+            <label for"newSubmit">&nbsp;</label>
+      	    <input type="submit" id="newSubmit" value="Add Item" class="form-control"/>
+          </span>
+          <span class="col-sm-6">&nbsp;</span>
+	    </div>
+
+	    <div class="row form-group">
+          <span class="col-sm-6">
+      	    <h5 id="newResults" class="newResults">Feedback</h5>
+          </span>
+          <span class="col-sm-6">&nbsp;</span>
+	    </div>
+	  </div>
+	</section>
+	<section>
+	  <div id="results">
+	    <div class="row">
+	      <span class="col-sm-6">
+	        Title
+	      </span>
+	      <span class="col-sm-3">
+	        Note No.
+	      </span>
+	      <span class="col-sm-3">&nbsp;</span>
+	    </div>
+	    <div class="resultsBody" id="resultsBody"/>
+      </div>
+	  </div>
+	</section>
+
+	    <section>
+      <div id="authentication" class="container">
+        <div class="row form-group">
+          <span class="col-sm-6">&nbsp;</span>
+          <span class="col-sm-3">
+        	  <label for="username">Id</label>
+            <input type="text" id="username" name="username" class="form-control" />
+          </span>
+          <span class="col-sm-3">
+        	  <label for="password">Password</label>
+            <input type="password" id="password" name="password" class="form-control" />
+          </span>
+
+        </div>
+        <div class="row form-group">
+          <span class="col-sm-6">&nbsp;</span>
+          <span class="col-sm-3">
+            <button type="button" class="btn btn-primary" id="authButton"><span class="glyphicon glyphicon-log-in"></span> Login</button>
+          </span>
+          <span class="col-sm-3">&nbsp;</span>
+        </div>
+        <div class="row">
+          <span class="col-sm-9">&nbsp;</span>
+          <span class="col-sm-3">
+            <h5 id="auth-results" class="auth-results">Logon Failed!</h5>
+          </span>
+        </div>
+      </div>
+    </section>
+
+
+	</form>
+	</main>
+	<footer><!-- This is the footer.-->&nbsp;</footer>
+</body>
+<script>
+$(document).ready(function() {
+	guidesController.init($('#guidesPage'));
+});
+</script>
+
+<!-- Results Template -->
+<script id="resultsRow" type="text/x-jQuery-tmpl">
+<div class="row form-group">
+  <span class="col-sm-6">&nbsp;</span>
+  	  <span class="editNav">
+  	    <a href="#" class="resultEdit" value="${_id}">
+  	      <img src="resources/UniversalEditButton3.png" style="width:18px;height:18px"/>&nbsp;
+  	    </a>
+  	    <a href="#" class="resultDelete" value="${_id}">
+  	      <img src="resources/trash.png" style="width:24px;height:24px"/>&nbsp;
+  	    </a>
+      </span>
+  	  <a href="#" value="${_id}">${title}</a>
+  </span>
+  <span class="col-sm-3">
+  	  {{if note}}
+  			<a href="https://service.sap.com/sap/support/notes/${note}">${note}</a>
+  		{{else}}
+  		  &nbsp;
+  		{{/if}}
+  </span>
+  <span class="col-sm-3">&nbsp;</span>
+</div>
+<div id="${_id}">
+  <div class="row form-group">
+    <span class="col-sm-6">${description}</span>
+    <span class="col-sm-3">&nbsp;</span>
+    <span class="col-sm-3">&nbsp;</span>
+  </div>
+  <div class="row form-group">
+    <span class="col-sm-6">Parameter: ${parameter}</span>
+    <span class="col-sm-3">&nbsp;</span>
+    <span class="col-sm-3">&nbsp;</span>
+  </div>
+</div>
+
+</tbody>
+</script>
+
+</html>
