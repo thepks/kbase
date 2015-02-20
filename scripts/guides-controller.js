@@ -72,7 +72,7 @@ guidesController = function() {
                 console.log("Data: " + data + "\nStatus: " + status);
               },
               error: function(data,status) {
-                console.log("Error! "+ data + "\nStatus: " + status)
+                console.log("Error! "+ data + "\nStatus: " + status);
                 }
                 });
 
@@ -102,7 +102,7 @@ guidesController = function() {
                 logged_on = true;
               },
               error: function(data,status) {
-                console.log("Error! "+ data + "\nStatus: " + status)
+                console.log("Error! "+ data + "\nStatus: " + status);
 
   				      $(guidesPage).find('#auth-results').show();
   			        $(guidesPage).find('#auth-results').text('Logon Failed! ' + status);
@@ -316,7 +316,7 @@ guidesController = function() {
 
                     console.log("Data " + data);
                     var d = JSON.parse(data);
-                    var pd = []
+                    var pd = [];
                     for (var i=0; i<d.rows.length;i++){
                       pd.push(d.rows[i].doc);
                     }
@@ -336,6 +336,6 @@ guidesController = function() {
                 });
 
 	 }
-  }
+  };
 
 }();
