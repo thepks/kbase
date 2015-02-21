@@ -59,39 +59,44 @@ guidesController = function() {
           });
 
         	$(guidesPage).find('#logoffEvt').click(function(evt) {
+        	  var promise_logoff;
   				  console.log('In event logoff');
 	  				evt.preventDefault();
 		  			$(guidesPage).find('#logonEvt').show();
             $(guidesPage).find('#logoffEvt').hide();
             logged_on = false;
-  				  $.ajax({
+
+  				  promise_logoff = $.ajax({
   				    type: "DELETE",
-  				    url: "/_session",
-  	  			  success: function(data, status, jqXHR){
+  				    url: "/_session"
+  				  });
+
+  	  			promise_logoff.done(function(data, status, jqXHR){
   	  			    // Mod to add in setting the cookie
                 console.log("Data: " + data + "\nStatus: " + status);
-              },
-              error: function(data,status) {
+            });
+            promise_logoff.fail(function(data,status) {
                 console.log("Error! "+ data + "\nStatus: " + status);
-                }
-                });
+            });
 
             self.hideAll();
   				});
 
   				$(guidesPage).find('#authButton').click(function(evt) {
+  				  var promise_logon;
   				  console.log('In logon');
   				  var usr = $(guidesPage).find('#username').val();
   				  var pwd = $(guidesPage).find('#password').val();
   				  var jname = [];
-  				  $.ajax({
+  				  promise_logon = $.ajax({
   				    type: "POST",
   				    url: "/_session",
   				    data: {
     				    name : usr,
     				    password : pwd
-  	  			  },
-  	  			  success: function(data, status, jqXHR){
+  	  			  }
+  				  });
+  	  			promise_logon.done(function(data, status, jqXHR){
                 console.log("Data: " + data + "\nStatus: " + status);
                 auth_token = jqXHR.getResponseHeader("AuthSession");
     	       	  $(guidesPage).find('#authentication').hide();
@@ -100,8 +105,8 @@ guidesController = function() {
 
                 self.hideAll();
                 logged_on = true;
-              },
-              error: function(data,status) {
+            });
+            promise_logon.fail(function(data,status) {
                 console.log("Error! "+ data + "\nStatus: " + status);
 
   				      $(guidesPage).find('#auth-results').show();
@@ -110,17 +115,15 @@ guidesController = function() {
     				    setTimeout(function(){
     				      $(guidesPage).find('#auth-results').hide();
     				    },2000);
-
-
-                }
-                });
+              });
 
   				});
 
 
 
 				// Add the save event handler
-				$(guidesPage).find('#manageForm').submit(function(evt) {
+				$(guidesPage).find('#newSubmit').click(function(evt) {
+				  var promise_save;
 				  evt.preventDefault();
 				  if (manage) {
 				    console.log('Saving...');
@@ -140,13 +143,14 @@ guidesController = function() {
 
             console.log(JSON.stringify(res));
 
-            $.ajax({
+            promise_save = $.ajax({
       				url: url,
       				type: "POST",
       				data: JSON.stringify(res),
       				contentType: "application/json; charset=utf-8",
-      				dataType: "json",
-      				success: function(data, status) {
+      				dataType: "json"
+            });
+      			promise_save.done(function(data, status) {
 
       				$(guidesPage).find('#newResults').show();
 				      $(guidesPage).find('#newResults').text('Success!');
@@ -159,8 +163,9 @@ guidesController = function() {
                 $(guidesPage).find('#newResults').text('');
                 $(guidesPage).find('#newSubmit').attr('disabled',false);
   				    },2000);
-      				},
-      				error: function(data,status) {
+      			});
+
+      			promise_save.fail(function(data,status) {
   				      $(guidesPage).find('#newResults').show();
   			        $(guidesPage).find('#newResults').text('Error! ' + JSON.stringify(data));
 
@@ -169,7 +174,6 @@ guidesController = function() {
                   $(guidesPage).find('#newResults').text('');
                   $(guidesPage).find('#newSubmit').attr('disabled',false);
     				    },5000);
-      				}
 				    });
 
 				    $(guidesPage).find('#newFeedback').show();
@@ -221,7 +225,7 @@ guidesController = function() {
                   success: function(data, status, jqXHR) {
 
                   console.log("Data " + data);
-                  var res = JSON.parse(data);
+                  var res = data;
 
                   var conf = window.confirm('Do you want to delete ' + res.title);
 
@@ -257,7 +261,7 @@ guidesController = function() {
                   success: function(data, status, jqXHR) {
 
                     console.log("Data " + data);
-                    var res = JSON.parse(data);
+                    var res = data;
 
                     // Delete old values
           					$(guidesPage).find('#manage').find('input').val('');
@@ -303,7 +307,7 @@ guidesController = function() {
 	    var u = searchUrl1+val+searchUrl2+val+searchUrl3;
       console.log(u);
 
-      $(guidesPage).find('#resultList tbody').remove();
+      $(guidesPage).find('#resultsBody').children().remove();
       $(guidesPage).find('#results').removeClass('not');
       $(guidesPage).find('#results').show();
 
@@ -315,20 +319,20 @@ guidesController = function() {
                   success: function(data, status, jqXHR) {
 
                     console.log("Data " + data);
-                    var d = JSON.parse(data);
+                    var d = data;
                     var pd = [];
                     for (var i=0; i<d.rows.length;i++){
                       pd.push(d.rows[i].doc);
                     }
 
-                    $(guidesPage).find('#resultList').append($('#resultsRow').tmpl(pd));
+                    $(guidesPage).find('#resultsBody').append($('#resultsRow').tmpl(pd));
 
 
                     if (manage) {
               		    $(guidesPage).find('.editNav').slideToggle("fast");
                     }
 
-                    updateEventHandler();
+                    self.updateEventHandler();
                   },
                   error: function(data,status) {
                     console.log('Error! ' + data);
